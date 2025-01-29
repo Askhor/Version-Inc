@@ -1,6 +1,7 @@
 import argparse
 import datetime
 import json
+import os
 import re
 from pathlib import Path
 
@@ -148,8 +149,30 @@ def run_version_inc():
         prog="Version-Inc",
         description="A lightweight tool for incrementing version numbers in files"
     )
-    parser.parse_args()
-    with Path(CONFIG_FILE).open() as file:
+    parser.add_argument("-ge","--generate-example",action="store_true", help=f"Generate an example {CONFIG_FILE}")
+    args = parser.parse_args()
+
+    path = Path(CONFIG_FILE)
+
+    if args.generate_example:
+        if path.exists():
+            print(f"{CONFIG_FILE} already exists in {Path(os.curdir).resolve()}")
+            print("Delete the file to allow for automatic generation of new file")
+            return
+
+        path.write_text(json.dumps({
+            "template": "<MAJOR>.<MINOR>.<COUNTER>",
+            "targets": {}
+        },indent="\t"))
+
+        return
+
+    if not path.exists():
+        print(f"No {CONFIG_FILE} found in current directory: {Path(os.curdir).resolve()}")
+        print(f"Use vinc -ge to generate an example {CONFIG_FILE}")
+        return
+
+    with path.open() as file:
         data = json.load(file)
 
     state = VincState(data)
@@ -160,4 +183,4 @@ def run_version_inc():
     for target in state.targets:
         target.execute()
 
-    Path(CONFIG_FILE).write_text(json.dumps(state.to_json(), indent="\t"))
+    path.write_text(json.dumps(state.to_json(), indent="\t"))

@@ -1,9 +1,9 @@
 {
 	"template": "<YEAR>.<MONTH>.<COUNTER>",
-	"version": "2025.1.5",
+	"version": "2025.2.2",
 	"YEAR": 2025,
-	"MONTH": 1,
-	"COUNTER": 5,
+	"MONTH": 2,
+	"COUNTER": 2,
 	"targets": {
 		"pyproject.toml": {
 			"find": "\"<VERSION>\"\\s*#\\s*vinc",

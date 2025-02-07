@@ -150,6 +150,7 @@ def run_version_inc():
         description="A lightweight tool for incrementing version numbers in files"
     )
     parser.add_argument("-ge","--generate-example",action="store_true", help=f"Generate an example {CONFIG_FILE}")
+    parser.add_argument("-c","--current", action="store_true", help="Prints the current version and exits")
     args = parser.parse_args()
 
     path = Path(CONFIG_FILE)
@@ -176,6 +177,11 @@ def run_version_inc():
         data = json.load(file)
 
     state = VincState(data)
+
+    if args.current:
+        print(str(state))
+        return
+
     print(f"The current version is {str(state)}")
     state.inc()
     print(f"The new version is {str(state)}")

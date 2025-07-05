@@ -5,6 +5,8 @@ import os
 import re
 from pathlib import Path
 
+from version_inc.terminal_formatting import add_color
+
 CONFIG_FILE = "vinc.json"
 VARIABLES = ["YEAR", "MONTH", "DAY", "COUNTER", "MAJOR", "MINOR"]
 DATE_VARIABLES = frozenset({"YEAR", "MONTH", "DAY"})
@@ -27,6 +29,7 @@ def update_variable(name, old_value):
             return old_value + 1
         case "MAJOR" | "MINOR":
             return old_value
+    return None
 
 
 def extract_var_names(template):
@@ -56,7 +59,7 @@ class Target:
         string = self.path.expanduser().read_text()
         matches = list(find.finditer(string))
 
-        print(f"{len(matches)} match(es) were found in {self.path}")
+        print(f"{add_color(2,len(matches))} match(es) were found in {add_color(2,self.path)}")
         replacement = self.replace
         replacement = replacement.replace("<VERSION>", str(self.state))
 
@@ -184,7 +187,7 @@ def run_version_inc():
 
     print(f"The current version is {str(state)}")
     state.inc()
-    print(f"The new version is {str(state)}")
+    print(f"The new version is {add_color(1,str(state))}")
 
     for target in state.targets:
         target.execute()

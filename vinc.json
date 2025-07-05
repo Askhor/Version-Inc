@@ -1,8 +1,8 @@
 {
 	"template": "<YEAR>.<MONTH>.<COUNTER>",
-	"version": "2025.2.2",
+	"version": "2025.7.2",
 	"YEAR": 2025,
-	"MONTH": 2,
+	"MONTH": 7,
 	"COUNTER": 2,
 	"targets": {
 		"pyproject.toml": {
